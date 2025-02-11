@@ -11,7 +11,7 @@ using namespace std::chrono;
 
 void fillMatrix(vector<vector<int>>& matrix) { 
     random_device rd;
-    mt19937 gen(rd()); // використовуємо mt19997 для істинного рандому
+    mt19937 gen(rd()); // використовуємо mt19997 для псевдо-рандому
     uniform_int_distribution<> dis(0, 99); // використовуємо рівномірний розподіл від 0 до 99
 
     int n = matrix.size();
@@ -119,20 +119,21 @@ int main() {
     auto endSeq = high_resolution_clock::now();
     auto durationSeq = duration_cast<milliseconds>(endSeq - startSeq).count();
 
+    cout << "\nЧас послідовної обробки: " << durationSeq << " мілісекунд" << endl;
+
 
     auto startPar = high_resolution_clock::now();
     parallelProcessMatrix(matrixPar, numThreads);
     auto endPar = high_resolution_clock::now();
     auto durationPar = duration_cast<milliseconds>(endPar - startPar).count();
 
+    cout << "Час паралельної обробки (" << numThreads << " потоків): " << durationPar << " мілісекунд" << endl;
+
     if (n <= 10) {
         cout << "\nМатриця після обробки:" << endl;
         printMatrix(matrixPar);
 
     }
-
-    cout << "\nЧас послідовної обробки: " << durationSeq << " мілісекунд" << endl;
-    cout << "Час паралельної обробки (" << numThreads << " потоків): " << durationPar << " мілісекунд" << endl;
 
     return 0;
 }
